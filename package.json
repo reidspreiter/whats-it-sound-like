@@ -10,9 +10,13 @@
     "format": "prettier --write .",
     "lint": "eslint --fix && eslint .",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build-icons": "node scripts/build-icons.js"
   },
   "lint-staged": {
+    "{src/assets/icons/**/*,src/lib/components/icon-types.ts,scripts/build-icons.js}": [
+      "npm run build-icons"
+    ],
     "*.{js,ts,css,svelte}": [
       "npm run lint",
       "npm run format"
