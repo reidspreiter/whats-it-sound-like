@@ -1,8 +1,21 @@
+:root {
+  --color-bg-main: #000000;
+  --color-bg-surface: #3a3a3a;
+  --color-bg-surface-shadowed: #353535;
+  --color-bg-surface-side: #292929;
+  --color-bg-surface-highlight: #5c5c5c;
+  --color-surface-border: #5c5c5c;
+  --color-text-primary: #e8e8e8;
+  --color-text-primary-shadowed: #d0d0d0;
+  --color-analog-well: #000000;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Courier New", Courier, monospace;
+  color: var(--color-text-primary);
 }
 
 #app {
