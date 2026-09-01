@@ -1,3 +1,4 @@
+export { default as Context } from "./Context.svelte";
 export * from "./icon";
 export * from "./menu";
 export { default as Popper } from "./Popper.svelte";
