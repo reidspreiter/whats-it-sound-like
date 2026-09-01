@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Attachment } from "svelte/attachments";
+  import type { MouseEventHandler } from "svelte/elements";
 
-  import { onMount, type Snippet } from "svelte";
+  import { type Snippet } from "svelte";
 
   import { type Position } from "../util";
   import Portal from "./Portal.svelte";
@@ -42,27 +43,11 @@
     }
   };
 
-  const handleResize = () => {
-    windowWidth = window.innerWidth;
-  };
-
-  const handleStickyClose = (e: PointerEvent) => {
+  const handleStickyClose: MouseEventHandler<Window> = (e) => {
     if (!anchor?.contains(e.target as Node) && !ref?.contains(e.target as Node)) {
       open = false;
     }
   };
-
-  onMount(() => {
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  });
-
-  $effect(() => {
-    if (open && !sticky) {
-      window.addEventListener("click", handleStickyClose);
-    }
-    return () => window.removeEventListener("click", handleStickyClose);
-  });
 
   const position = $derived.by<Position>(() => {
     if (!open || windowWidth === 0 || !ref || !anchor) {
@@ -119,6 +104,11 @@
     </div>
   </Portal>
 {/if}
+
+<svelte:window
+  bind:innerWidth={windowWidth}
+  onclick={open && !sticky ? handleStickyClose : undefined}
+/>
 
 <style>
   .popper {

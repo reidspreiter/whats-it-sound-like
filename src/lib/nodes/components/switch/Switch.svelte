@@ -5,7 +5,6 @@
     checked?: boolean;
     children?: Snippet;
     divRef?: HTMLDivElement;
-    id: string;
     onchange?: (checked: boolean) => void;
   }
 
@@ -13,23 +12,13 @@
     checked = $bindable(false),
     children,
     divRef = $bindable(),
-    id,
     onchange,
   }: SwitchProps = $props();
-
-  const switchId = $derived(`switch-${id}`);
 </script>
 
 <div bind:this={divRef} class="switch-module">
-  <input
-    type="checkbox"
-    id={switchId}
-    bind:checked
-    class="switch-input"
-    onchange={() => onchange?.(checked)}
-  />
-
-  <label for={switchId} class="switch-btn">
+  <label class="switch-btn">
+    <input type="checkbox" bind:checked class="switch-input" onchange={() => onchange?.(checked)} />
     <div
       class="face top top-contents"
       style={checked ? "--color-text-primary: var(--color-text-primary-shadowed);" : ""}
@@ -70,7 +59,7 @@
     position: absolute;
     width: 100%;
     box-sizing: border-box;
-    transition: transform 0.1s ease-out;
+    transition: transform 0.1s;
   }
 
   .face.top {
@@ -93,7 +82,7 @@
     z-index: 1;
   }
 
-  .switch-input:checked + .switch-btn .face.top {
+  .switch-input:checked ~ .face.top {
     transform: translateY(calc(var(--switch-z) * 0.5));
     background: var(--color-bg-surface-shadowed);
     border-bottom-color: var(--color-bg-surface-side);
@@ -104,7 +93,7 @@
       /* Outer shadow */ -6px 8px 16px rgba(0, 0, 0, 0.06);
   }
 
-  .switch-input:checked + .switch-btn .face.front {
+  .switch-input:checked ~ .face.front {
     transform: scaleY(calc(var(--switch-z) * 0.5));
   }
 </style>
