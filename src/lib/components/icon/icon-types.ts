@@ -1,2 +1,2 @@
 // Automatically generated. Do not modify.
-export type IconName = "caret-right";
+export type IconName = "backspace" | "caret-right" | "mouse-left-click";
