@@ -36,6 +36,7 @@
     padding: 4px;
     user-select: none;
     display: flex;
+    align-items: center;
   }
 
   .sub-menu-entry.hovered {

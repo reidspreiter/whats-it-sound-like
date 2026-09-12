@@ -1,5 +1,5 @@
 <script>
-  import { NodeSurface, Switch, SwitchHousing } from "../../components";
+  import { Jack, NodeSurface, Switch, SwitchHousing } from "../../components";
 </script>
 
 <NodeSurface>
@@ -7,4 +7,7 @@
     <Switch>X</Switch>
     <Switch>O</Switch>
   </SwitchHousing>
+
+  <Jack name="in" type="input" />
+  <Jack name="out" type="output" />
 </NodeSurface>

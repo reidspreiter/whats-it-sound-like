@@ -23,13 +23,13 @@
     style: propStyle,
   }: IconProps = $props();
 
-  const icons = import.meta.glob("../../assets/icons/*.svg", {
+  const icons = import.meta.glob("../../../assets/icons/*.svg", {
     eager: true,
     import: "default",
     query: "?raw",
   }) as Record<string, string>;
 
-  const iconRaw = $derived(icons[`../../assets/icons/${name}.svg`]);
+  const iconRaw = $derived(icons[`../../../assets/icons/${name}.svg`]);
 </script>
 
 <div
@@ -43,7 +43,7 @@
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html iconRaw}
   {:else}
-    <span>{name} not found</span>
+    <span style="color: red;">{name} not found</span>
   {/if}
 </div>
 
@@ -54,10 +54,10 @@
     fill: var(--icon-color);
     stroke: var(--stroke-color);
     stroke-width: var(--stroke-width);
+  }
 
-    /* Align with text */
-    vertical-align: middle;
-    position: relative;
-    top: -0.05em;
+  .icon {
+    display: flex;
+    align-items: center;
   }
 </style>

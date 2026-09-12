@@ -1,5 +1,17 @@
 <script lang="ts">
-  import { Menu, MenuDivider, MenuItem, Popper, SubMenu } from "../components";
+  import {
+    Checkbox,
+    Menu,
+    MenuDivider,
+    MenuHeader,
+    MenuItem,
+    Popper,
+    Slider,
+    SubMenu,
+    TextField,
+  } from "../components";
+  import { preferences } from "../state";
+  import { clamp } from "../util";
 
   type Button = "edit" | "file" | "help" | "view";
 
@@ -45,7 +57,43 @@
   <button class="menu-button" onclick={() => handleClickEvent("view", !viewOpen)}>View</button>
   <Popper bind:open={viewOpen}>
     <Menu>
-      <MenuItem type="text">Coming soon...</MenuItem>
+      <MenuItem
+        style="display: flex; align-items: center;"
+        onclick={() => (preferences.showKeybindHints = !preferences.showKeybindHints)}
+      >
+        <Checkbox bind:checked={preferences.showKeybindHints} />Show Keybind Hints
+      </MenuItem>
+      <MenuHeader>Cables</MenuHeader>
+      <MenuDivider />
+      <MenuItem type="text">
+        Opacity:
+        <div class="menu-slider">
+          <Slider bind:value={preferences.cableOpacity} min={0} max={1} />
+          <TextField
+            style="width: 4em;"
+            value={(preferences.cableOpacity * 100).toFixed(2)}
+            onchange={(e) => {
+              const num = clamp(parseFloat(e.currentTarget?.value ?? 0) / 100, 0, 1);
+              preferences.cableOpacity = isNaN(num) ? 0 : num;
+            }}
+          />
+        </div>
+      </MenuItem>
+      <MenuItem type="text">
+        Tension:
+        <div class="menu-slider">
+          <Slider bind:value={preferences.cableTension} min={0} max={1} />
+          <TextField
+            style="width: 4em;"
+            value={(preferences.cableTension * 100).toFixed(2)}
+            onchange={(e) => {
+              const num = clamp(parseFloat(e.currentTarget?.value ?? 0) / 100, 0, 1);
+              preferences.cableTension = isNaN(num) ? 0 : num;
+            }}
+          />
+        </div>
+      </MenuItem>
+      <MenuDivider />
     </Menu>
   </Popper>
   <button class="menu-button" onclick={() => handleClickEvent("help", !helpOpen)}>Help</button>
@@ -72,5 +120,10 @@
     font-family: inherit;
     font-size: inherit;
     padding: 2px 6px;
+  }
+
+  .menu-slider {
+    display: flex;
+    align-items: center;
   }
 </style>
