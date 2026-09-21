@@ -2,7 +2,7 @@
   import { SvelteFlowProvider } from "@xyflow/svelte";
 
   import { MainFlow, SelectionMonitor } from "./lib/flow";
-  import { KeybindHintProvider, KeybindKeyListener } from "./lib/state";
+  import { KeybindHintProvider, KeybindKeyListener, NotificationProvider } from "./lib/state";
 </script>
 
 <div style="width: 100%; height: 100%;">
@@ -12,4 +12,5 @@
   </SvelteFlowProvider>
   <KeybindKeyListener />
   <KeybindHintProvider />
+  <NotificationProvider />
 </div>

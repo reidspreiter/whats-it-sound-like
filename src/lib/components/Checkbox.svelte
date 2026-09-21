@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { HTMLAttributes } from "svelte/elements";
+  import type { HTMLInputAttributes } from "svelte/elements";
 
-  interface CheckboxProps extends HTMLAttributes<HTMLDivElement> {
+  interface CheckboxProps extends HTMLInputAttributes {
     checked?: boolean;
   }
 
