@@ -3,10 +3,10 @@
 
   interface SurfaceProps extends HTMLAttributes<HTMLDivElement> {}
 
-  let { children, ...others }: SurfaceProps = $props();
+  let { children, class: className, ...others }: SurfaceProps = $props();
 </script>
 
-<div class="surface" {...others}>
+<div class="surface {className}" {...others}>
   {@render children?.()}
 </div>
 
