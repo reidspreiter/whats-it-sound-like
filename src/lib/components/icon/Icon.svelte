@@ -1,8 +1,9 @@
-<script lang="ts">
+<script lang="ts" module>
   import type { HTMLAttributes } from "svelte/elements";
 
   import type { IconName } from "./icon-types";
-  interface IconProps extends HTMLAttributes<HTMLDivElement> {
+
+  export interface IconProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
     color?: string;
     maxSize?: string;
@@ -11,13 +12,15 @@
     strokeColor?: string;
     strokeWidth?: string;
   }
+</script>
 
+<script lang="ts">
   let {
     className,
     color = "var(--color-text-primary)",
-    maxSize = "1em",
+    maxSize,
     name,
-    size = "100%",
+    size = "1em",
     strokeColor = "var(--color-text-primary)",
     strokeWidth = "0px",
     style: propStyle,
@@ -34,7 +37,9 @@
 
 <div
   class="icon {className}"
-  style="width: {size}; height: {size}; max-width: {maxSize}; max-height: {maxSize}; {propStyle}"
+  style="width: {size}; height: {size};{maxSize !== undefined
+    ? ` max-width: ${maxSize}; max-height: ${maxSize};`
+    : ''} {propStyle}"
   style:--icon-color={color}
   style:--stroke-color={strokeColor}
   style:--stroke-width={strokeWidth}
@@ -43,7 +48,7 @@
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html iconRaw}
   {:else}
-    <span style="color: red;">{name} not found</span>
+    <span style="color: red;">□</span>
   {/if}
 </div>
 
