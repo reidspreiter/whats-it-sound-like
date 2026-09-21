@@ -1,9 +1,13 @@
+export { default as Button } from "./Button.svelte";
 export { default as Checkbox } from "./Checkbox.svelte";
 export { default as Context } from "./Context.svelte";
 export * from "./icon";
+export { default as IconButton } from "./IconButton.svelte";
 export * from "./menu";
+export { default as Modal } from "./Modal.svelte";
 export { default as Popper } from "./Popper.svelte";
 export { default as Portal } from "./Portal.svelte";
 export { default as Slider } from "./Slider.svelte";
 export { default as Surface } from "./Surface.svelte";
 export { default as TextField } from "./TextField.svelte";
+export { default as TextWithRename } from "./TextWithRename.svelte";
