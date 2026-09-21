@@ -8,7 +8,7 @@
   --color-text-primary: #e8e8e8;
   --color-text-primary-shadowed: #d0d0d0;
   --color-analog-well: #000000;
-  --color-highlight-blue: #79b8f4;
+  --color-highlight-blue: #0b7fec;
 }
 
 html,
@@ -17,6 +17,17 @@ body {
   padding: 0;
   font-family: "Courier New", Courier, monospace;
   color: var(--color-text-primary);
+  scrollbar-color: var(--color-bg-surface-highlight) transparent;
+}
+
+h3 {
+  font-weight: normal;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 0;
 }
 
 #app {
@@ -45,4 +56,16 @@ body {
 .connection-in-progress .svelte-flow__edges,
 .connection-in-progress .svelte-flow__handle {
   cursor: grab !important;
+}
+
+textarea {
+  border: 1px solid var(--color-surface-border);
+  font-family: inherit;
+  color: inherit;
+  background: var(--color-bg-surface-side);
+  padding: 2px;
+}
+
+textarea:focus {
+  outline: none;
 }
