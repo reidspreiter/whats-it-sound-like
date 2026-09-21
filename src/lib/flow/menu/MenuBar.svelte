@@ -9,9 +9,12 @@
     Slider,
     SubMenu,
     TextField,
-  } from "../components";
-  import { preferences } from "../state";
-  import { clamp } from "../util";
+  } from "../../components";
+  import { activeProject, getProjects, openProject, preferences } from "../../state";
+  import { clamp } from "../../util";
+  import ExportModal from "./ExportModal.svelte";
+  import NewProjectModal from "./NewProjectModal.svelte";
+  import ProjectsModal from "./ProjectsModal.svelte";
 
   type Button = "edit" | "file" | "help" | "view";
 
@@ -19,6 +22,10 @@
   let editOpen = $state(false);
   let viewOpen = $state(false);
   let helpOpen = $state(false);
+
+  let newProjectModalOpen = $state(false);
+  let exportModalOpen = $state(false);
+  let projectsModalOpen = $state(false);
 
   const handleClickEvent = (button: Button, open: boolean) => {
     fileOpen = open && button == "file";
@@ -32,19 +39,41 @@
   <button class="menu-button" onclick={() => handleClickEvent("file", !fileOpen)}>File</button>
   <Popper bind:open={fileOpen}>
     <Menu>
-      <MenuItem>New</MenuItem>
+      <MenuItem
+        onclick={() => {
+          newProjectModalOpen = true;
+          fileOpen = false;
+        }}>New</MenuItem
+      >
       <SubMenu>
         Open Recent
 
         {#snippet menu()}
-          <MenuItem>Project Name</MenuItem>
+          {#await getProjects(5)}
+            loading...
+          {:then projects}
+            {#each projects as [id, info] (id)}
+              {#if id !== activeProject.id}
+                <MenuItem onclick={async () => await openProject(id)}>{info.title}</MenuItem>
+              {/if}
+            {/each}
+          {/await}
         {/snippet}
       </SubMenu>
       <MenuDivider />
-      <MenuItem>Import</MenuItem>
-      <MenuItem>Export</MenuItem>
+      <MenuItem
+        onclick={() => {
+          fileOpen = false;
+          exportModalOpen = true;
+        }}>Export</MenuItem
+      >
       <MenuDivider />
-      <MenuItem>Projects</MenuItem>
+      <MenuItem
+        onclick={() => {
+          fileOpen = false;
+          projectsModalOpen = true;
+        }}>Projects</MenuItem
+      >
     </Menu>
   </Popper>
   <button class="menu-button" onclick={() => handleClickEvent("edit", !editOpen)}>Edit</button>
@@ -103,6 +132,13 @@
     </Menu>
   </Popper>
 </div>
+
+<NewProjectModal bind:open={newProjectModalOpen} />
+<ExportModal
+  bind:open={exportModalOpen}
+  ids={activeProject.id !== null ? [activeProject.id] : []}
+/>
+<ProjectsModal bind:open={projectsModalOpen} />
 
 <style>
   .menu-bar {
