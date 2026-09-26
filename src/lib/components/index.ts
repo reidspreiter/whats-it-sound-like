@@ -3,6 +3,7 @@ export { default as Checkbox } from "./Checkbox.svelte";
 export { default as Context } from "./Context.svelte";
 export * from "./icon";
 export { default as IconButton } from "./IconButton.svelte";
+export { default as KeybindKey } from "./KeybindKey.svelte";
 export * from "./menu";
 export { default as Modal } from "./Modal.svelte";
 export { default as Popper } from "./Popper.svelte";
