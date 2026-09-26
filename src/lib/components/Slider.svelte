@@ -1,15 +1,14 @@
 <script lang="ts">
-  interface SliderProps {
-    max?: number;
-    min?: number;
-    step?: number;
+  import type { HTMLInputAttributes } from "svelte/elements";
+
+  interface SliderProps extends HTMLInputAttributes {
     value?: number;
   }
 
-  let { max, min, step, value = $bindable() }: SliderProps = $props();
+  let { step, value = $bindable(), ...others }: SliderProps = $props();
 </script>
 
-<input type="range" bind:value {min} {max} step={step ?? "any"} />
+<input type="range" bind:value step={step ?? "any"} {...others} />
 
 <style>
   input[type="range"] {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Icon } from "../../components";
+  import { Icon } from ".";
 
   interface KeybindKeyProps {
     key: string;
@@ -13,6 +13,8 @@
     <Icon name="backspace" />
   {:else if key === "Left-Click"}
     <Icon name="mouse-left-click" />
+  {:else if key === "Middle-Click"}
+    <Icon name="mouse-middle-click" />
   {:else}
     {key === "Control" ? "Ctrl" : key}
   {/if}

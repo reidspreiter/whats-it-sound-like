@@ -8,6 +8,7 @@ export type IconName =
   | "folder-open"
   | "import"
   | "mouse-left-click"
+  | "mouse-middle-click"
   | "path"
   | "pencil"
   | "plus"

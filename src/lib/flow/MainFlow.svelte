@@ -19,6 +19,7 @@
   import {
     activeProject,
     loadProjectFlow,
+    preferences,
     previousActiveProjectId,
     saveProjectFlow,
   } from "../state";
@@ -114,6 +115,8 @@
   maxZoom={5}
   zIndexMode="manual"
   onpanecontextmenu={(e) => nodePlacementContextRef?.handleContext(e.event)}
+  panOnDrag={preferences.navigationStyle === "pan-on-drag"}
+  panOnScroll={preferences.navigationStyle === "pan-on-scroll"}
 >
   <Background bgColor="var(--color-bg-main)" />
   <Panel position="top-left" style="margin: 0;">

@@ -1,9 +1,8 @@
 <script lang="ts" module>
   import type { Attachment } from "svelte/attachments";
 
-  import { Portal } from "../../components";
+  import { KeybindKey, Portal } from "../../components";
   import { type Keybind, preferences } from "../../state";
-  import KeybindKey from "./KeybindKey.svelte";
 
   export interface KeybindHintInfo {
     description: string;
