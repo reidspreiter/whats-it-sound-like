@@ -9,7 +9,7 @@
     type?: MenuItemType;
   }
 
-  let { children, type = "button", ...others }: MenuItemProps = $props();
+  let { children, class: className, type = "button", ...others }: MenuItemProps = $props();
 
   const menuContext = getMenuContext();
   const id = Symbol();
@@ -20,7 +20,7 @@
 </script>
 
 <div
-  class="menu-item {getClassNameForType(type)}"
+  class="menu-item {getClassNameForType(type)} {className}"
   {...others}
   onmouseenter={type !== "text"
     ? () => {
