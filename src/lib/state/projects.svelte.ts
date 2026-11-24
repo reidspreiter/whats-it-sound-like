@@ -1,15 +1,11 @@
-import {
-  type Edge,
-  isEdge,
-  isNode,
-  type Node,
-  type NodeOrigin,
-  type XYPosition,
-} from "@xyflow/svelte";
+import { isEdge, isNode } from "@xyflow/svelte";
 import { type DBSchema, type IDBPDatabase, type IDBPTransaction, openDB } from "idb";
 
+import type { WISLEdge } from "../edges";
+
+import { type JsonifiedNode, jsonifyNode, type WISLNode } from "../nodes";
 import { prop } from "../util";
-import { sendNotification } from "./notifications";
+import { postError } from "./notifications";
 
 export interface ActiveProject {
   id: null | string;
@@ -22,20 +18,7 @@ export let previousActiveProjectId: null | string = null;
 const LATEST_VERSION = 1;
 const DB_NAME = "projects";
 
-export interface JsonifiedCable extends Edge {}
-
-export interface JsonifiedNode {
-  data: Record<string, unknown>;
-  id: string;
-  measured?: {
-    height?: number;
-    width?: number;
-  };
-  origin?: NodeOrigin;
-  position: XYPosition;
-  type?: string;
-  zIndex?: number;
-}
+export interface JsonifiedCable extends WISLEdge {}
 
 export interface ExportedProject {
   cables: JsonifiedCable[];
@@ -159,23 +142,11 @@ const openMostRecentProject = async () => {
   void (await tx.done);
 };
 
-const jsonifyNode = (node: Node) => {
-  return {
-    data: {},
-    id: node.id,
-    measured: node.measured,
-    origin: node.origin,
-    position: node.position,
-    type: node.type,
-    zIndex: node.zIndex,
-  } satisfies JsonifiedNode;
-};
-
 // Effect may call in to save project data before any data has been loaded,
 // causing real data to be overwritten with empty data.
 // We should block writes until an initial load has been completed.
 let blockDataWrites = true;
-export const saveProjectFlow = async (id: string, nodes: Node[], cables: Edge[]) => {
+export const saveProjectFlow = async (id: string, nodes: WISLNode[], cables: WISLEdge[]) => {
   if (blockDataWrites) {
     return;
   }
@@ -199,10 +170,10 @@ export const saveProjectFlow = async (id: string, nodes: Node[], cables: Edge[])
   void (await tx.done);
 };
 
-export const loadProjectFlow = async (id: string): Promise<[Node[], Edge[]]> => {
+export const loadProjectFlow = async (id: string): Promise<[WISLNode[], WISLEdge[]]> => {
   const project = await (await getDb()).get("proj", id);
 
-  let ret = [[], []] as [Node[], Edge[]];
+  let ret = [[], []] as [WISLNode[], WISLEdge[]];
 
   if (project !== undefined) {
     ret = [project.nodes, project.cables];
@@ -359,7 +330,7 @@ export const importProjects = async (importContents: string) => {
     }
   } catch (error) {
     console.error("Failed to import projects", error);
-    sendNotification("Failed to import projects. Please try again.", "error");
+    postError("Failed to import projects. Please try again.");
   }
 
   await Promise.all(promises);
