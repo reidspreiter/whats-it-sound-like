@@ -1,2 +1,2 @@
-export * from "./nodeRenderContext";
+export * from "./node";
 export * from "./registry";

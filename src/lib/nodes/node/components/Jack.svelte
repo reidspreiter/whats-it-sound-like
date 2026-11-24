@@ -7,15 +7,20 @@
 
   import { getNodeRenderContext } from "../nodeRenderContext";
 
-  type JackType = "input" | "output";
+  export type JackType = "input" | "output";
   type HandleType = "source" | "target";
 
-  interface JackProps {
+  export interface JackProps {
+    /**
+     * The name displayed on the node surface. Defaults to `name`
+     */
+    label?: string;
     name: string;
     type: JackType;
   }
 
-  let { name, type }: JackProps = $props();
+  let { label, name, type }: JackProps = $props();
+  const _label = $derived(label === undefined ? name : label);
 
   let context = getNodeRenderContext();
 
@@ -33,7 +38,7 @@
       <div {style}></div>
     {/if}
   </div>
-  <p>{name}</p>
+  <p>{_label}</p>
 </div>
 
 <style>
