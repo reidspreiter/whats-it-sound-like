@@ -16,13 +16,21 @@
     notifications: {},
   });
 
-  export const sendNotification = (message: string, kind: NotificationKind = "info") => {
+  const post = (message: string, kind: NotificationKind) => {
     let id = Math.random().toFixed(5);
     while (id in notificationState) {
       id = Math.random().toFixed(5);
     }
 
     notificationState.notifications[id] = { kind, message };
+  };
+
+  export const postNotification = (message: string) => {
+    post(message, "info");
+  };
+
+  export const postError = (message: string) => {
+    post(message, "error");
   };
 </script>
 

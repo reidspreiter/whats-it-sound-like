@@ -1,9 +1,15 @@
 <script lang="ts">
-  import { type Node, useNodes, useSvelteFlow } from "@xyflow/svelte";
+  import { useNodes, useSvelteFlow } from "@xyflow/svelte";
 
   import { Context } from "../components";
   import Surface from "../components/Surface.svelte";
-  import { nodeRegistry, type NodeRenderContext, setNodeRenderContext } from "../nodes";
+  import {
+    initializeNode,
+    nodeRegistry,
+    type NodeRenderContext,
+    setNodeRenderContext,
+  } from "../nodes";
+  import { postError } from "../state";
 
   let context = $state<NodeRenderContext>({ visualOnly: true });
   setNodeRenderContext(context);
@@ -20,15 +26,19 @@
     const contextPos = contextRef?.getPos() ?? { left: 0, top: 0 };
     const position = screenToFlowPosition({ x: contextPos.left, y: contextPos.top });
 
-    const newNode = {
+    const [newNode, success] = initializeNode({
       data: {},
       id: `${Math.random()}`,
       origin: [0, 0],
       position,
       type,
-    } satisfies Node;
+    });
 
-    nodes.current = [...nodes.current, newNode];
+    if (success) {
+      nodes.current = [...nodes.current, newNode];
+    } else {
+      postError(`Failed to place node of type '${type}'`);
+    }
 
     contextRef?.close();
   };

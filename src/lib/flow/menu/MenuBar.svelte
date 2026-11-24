@@ -111,7 +111,7 @@
       >
       <MenuItem type="text">
         Zoom:
-        <div class="menu-slider">
+        <div class="flex-center">
           <Slider
             value={zoomPercentage}
             min={0}
@@ -203,9 +203,31 @@
           </MenuItem>
         {/snippet}
       </SubMenu>
+      <SubMenu>
+        Knob Rotation Style
+        {#snippet menu()}
+          <MenuItem onclick={() => (preferences.knobRotationStyle = "linear-ptr-lock")}
+            ><div class="flex-center">
+              <Radio bind:group={preferences.knobRotationStyle} value="linear-ptr-lock" />Linear
+              pointer lock
+            </div></MenuItem
+          >
+          <MenuItem onclick={() => (preferences.knobRotationStyle = "linear")}
+            ><div class="flex-center">
+              <Radio bind:group={preferences.knobRotationStyle} value="linear" />Linear
+            </div></MenuItem
+          >
+          <MenuItem onclick={() => (preferences.knobRotationStyle = "absolute-rotary")}
+            ><div class="flex-center">
+              <Radio bind:group={preferences.knobRotationStyle} value="absolute-rotary" />Absolute
+              rotary
+            </div></MenuItem
+          >
+        {/snippet}
+      </SubMenu>
       <MenuDivider />
       <MenuItem
-        style="display: flex; align-items: center;"
+        class="flex-center"
         onclick={() => (preferences.showKeybindHints = !preferences.showKeybindHints)}
       >
         <Checkbox bind:checked={preferences.showKeybindHints} />Show Keybind Hints
@@ -214,7 +236,7 @@
       <MenuDivider />
       <MenuItem type="text">
         Opacity:
-        <div class="menu-slider">
+        <div class="flex-center">
           <Slider bind:value={preferences.cableOpacity} min={0} max={1} />
           <TextField
             style="width: 4em;"
@@ -228,7 +250,7 @@
       </MenuItem>
       <MenuItem type="text">
         Tension:
-        <div class="menu-slider">
+        <div class="flex-center">
           <Slider bind:value={preferences.cableTension} min={0} max={1} />
           <TextField
             style="width: 4em;"
@@ -276,19 +298,16 @@
     padding: 2px 6px;
   }
 
-  .menu-slider,
-  .navigation-keybind,
   .keybind {
     display: flex;
     align-items: center;
-  }
-
-  .keybind {
     margin-left: 8px;
     gap: 2px;
   }
 
   .navigation-keybind {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
     font-size: 12px;
   }

@@ -1,9 +1,12 @@
 import type { Component } from "svelte";
 
+import type { WISLNodeConfig } from "../node/config";
+
 /**
  * What each node component svelte module is required to export
  */
 export interface NodeComponent {
+  CONFIG: WISLNodeConfig;
   default: Component;
 }
 
@@ -11,6 +14,7 @@ export interface NodeComponent {
  * Node data available in the registry once the component has been successfully registered
  */
 export interface RegisteredNode {
+  config: WISLNodeConfig;
   node: Component;
 }
 
@@ -23,17 +27,15 @@ const getNodeComponents = () => {
 const getNodeRegistry = () => {
   const registry = {} as NodeRegistry;
 
-  // Temporary name until we determine node definition structure
-  let index = 0;
   for (const [path, component] of Object.entries(getNodeComponents())) {
     try {
-      registry[index.toString()] = {
+      registry[component.CONFIG.name] = {
+        config: component.CONFIG,
         node: component.default,
       };
     } catch (e) {
       console.error(`Failed to register node component "${path}": ${e}`);
     }
-    index++;
   }
   return registry;
 };

@@ -1,4 +1,4 @@
-import { JACK_DIAMETER_PX } from "../nodes/components/Jack.svelte";
+import { JACK_DIAMETER_PX } from "../nodes";
 
 export const CABLE_NAME = "cable";
 
