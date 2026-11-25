@@ -18,6 +18,9 @@
     background: var(--color-bg-surface);
     border: 1px solid var(--color-surface-border);
     padding: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .node-surface-front {
