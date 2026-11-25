@@ -44,7 +44,7 @@ class AudioManager {
     }
 
     try {
-      const processor = ProcessorWorkletNode.fromConfig(this.context, config);
+      const processor = new ProcessorWorkletNode(this.context, config);
       this.processors[id] = processor;
       return processor;
     } catch (e) {
