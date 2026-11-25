@@ -11,6 +11,9 @@ export interface WISLAudioOutputInfo extends WISLAudioBufferInfo {
   channelCount: number;
 }
 
+export const FFTSizes = [32, 64, 128, 256, 512, 1024, 2048, 4096, 8192] as const;
+export type FFTSize = (typeof FFTSizes)[number];
+
 /**
  * List of reserved parameter names that nodes should not define
  */
