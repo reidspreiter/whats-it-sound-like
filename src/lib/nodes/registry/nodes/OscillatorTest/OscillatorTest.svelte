@@ -11,7 +11,7 @@
   import { Jack, NodeSurface, useWISLNode } from "../../../node";
 
   let { id }: AudioOutNode = $props();
-  let { getJackProps } = $derived(useWISLNode<AudioOutNode>(id));
+  let { getJackProps } = useWISLNode<AudioOutNode>(() => id);
 </script>
 
 <NodeSurface
