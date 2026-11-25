@@ -6,6 +6,31 @@ import type { JackProps, JackType, KnobProps } from "./components";
 import { getNodeRenderContext, type WISLNode, type WISLNodeConfig } from ".";
 import { nodeRegistry } from "../registry";
 
+const useAnimation = (animate: FrameRequestCallback) => {
+  let frame: null | number = null;
+
+  const stop = () => {
+    if (frame !== null) {
+      cancelAnimationFrame(frame);
+      frame = null;
+    }
+  };
+
+  const start = () => {
+    const _animate: FrameRequestCallback = (time) => {
+      animate(time);
+      frame = requestAnimationFrame(_animate);
+    };
+    frame = requestAnimationFrame(_animate);
+  };
+
+  $effect(() => {
+    start();
+
+    return stop;
+  });
+};
+
 type GetParams<TNode extends WISLNode> =
   TNode extends WISLNode<string, infer TProcessorConfig extends WISLAudioProcessorConfig>
     ? { [P in keyof TProcessorConfig["params"]]: number }
@@ -27,11 +52,13 @@ interface WISLNodeUtilities<TNode extends WISLNode = WISLNode> {
     name: string & TName,
     value: GetParams<TNode>[TName],
   ) => void;
+  useAnimation: typeof useAnimation;
 }
 
 export function useWISLNode<TNode extends WISLNode = WISLNode>(
-  id: string,
+  getId: () => string,
 ): WISLNodeUtilities<TNode> {
+  const id = $derived(getId());
   const context = getNodeRenderContext();
 
   // Default no-ops for error cases or visual render contexts that don't rely on complete functionality
@@ -43,6 +70,7 @@ export function useWISLNode<TNode extends WISLNode = WISLNode>(
       return { defaultValue: 0.5, label: name, max: 1, min: 0, value: 0.5 };
     },
     setParam: () => {},
+    useAnimation,
   };
 
   if (context.visualOnly) {
