@@ -3,3 +3,4 @@ export * from "./config";
 export * from "./node";
 export * from "./nodeRenderContext";
 export * from "./nodeUtilities.svelte";
+export * from "./param";

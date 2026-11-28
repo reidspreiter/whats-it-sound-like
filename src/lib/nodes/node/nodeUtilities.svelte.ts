@@ -127,6 +127,7 @@ export function useWISLNode<TNode extends WISLNode = WISLNode>(
 
     return {
       defaultValue: param?.defaultValue,
+      displayConfig: param?.displayConfig,
       label: name,
       max: param?.max ?? 1,
       min: param?.min ?? 0,

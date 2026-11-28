@@ -7,11 +7,16 @@
 
   import { onMount } from "svelte";
 
-  import { preferences } from "../../../state";
+  import type { DisplayConfig } from "../../../audio/shared";
+
+  import { IconButton, Popper, Surface, TextField, tooltip } from "../../../components";
+  import { addKeybindHint, preferences, removeKeybindHint } from "../../../state";
   import { clamp } from "../../../util";
+  import { getDisplayValueString, revertDisplayValue } from "../param";
 
   export interface KnobProps {
     defaultValue?: number;
+    displayConfig?: DisplayConfig;
     indicatorProps?: HTMLAttributes<HTMLSpanElement>;
     knobProps?: HTMLAttributes<HTMLDivElement>;
     knobSize?: number;
@@ -20,12 +25,12 @@
     min: number;
     sensitivity?: number;
     step?: number;
-    //unit?: string;
     value: number;
   }
 
   let {
     defaultValue,
+    displayConfig,
     indicatorProps,
     knobProps,
     knobSize = 40,
@@ -38,7 +43,10 @@
   }: KnobProps = $props();
 
   let percent = $state(0.5);
+  let valueMenuOpen = $state(false);
+
   const rawSensitivity = $derived(sensitivity / 200);
+  const displayValue = $derived(getDisplayValueString(value, step, displayConfig));
 
   let ptrLockDoubleClickTimeoutRef: null | number = null;
   let knobRef: HTMLDivElement;
@@ -84,6 +92,7 @@
   };
 
   const startDragging = (e: PointerEvent) => {
+    valueMenuOpen = false;
     knobRef.onpointermove = onDrag;
 
     if (preferences.knobRotationStyle === "linear-ptr-lock") {
@@ -137,6 +146,36 @@
 </script>
 
 <div class="knob-wrapper" style:--knob-size="{knobSize}px">
+  <div class="knob-menu">
+    <IconButton
+      name="keyboard"
+      description={valueMenuOpen ? undefined : "Set exact value"}
+      iconProps={{ size: "8px" }}
+      onclick={() => (valueMenuOpen = true)}
+    />
+    <Popper bind:open={valueMenuOpen} side="top">
+      <Surface>
+        <div>
+          {label}:<TextField
+            value={displayValue}
+            onchange={(e) => {
+              let newValue = Number(e.currentTarget.value);
+
+              if (isNaN(newValue)) {
+                newValue = defaultValue ?? value;
+              } else {
+                newValue = revertDisplayValue(newValue, displayConfig);
+              }
+
+              setValue(newValue);
+              valueMenuOpen = false;
+            }}
+          />
+          {displayConfig?.displayUnit ?? ""}
+        </div>
+      </Surface>
+    </Popper>
+  </div>
   <div
     bind:this={knobRef}
     class="knob nodrag"
@@ -144,7 +183,24 @@
     onpointerdown={handlePointerDown}
     onpointerup={stopDragging}
     ondblclick={handleDoubleClick}
+    onmouseenter={() => {
+      addKeybindHint("initialize-knob", { description: "Initialize knob", keybind: ["dbl-click"] });
+      if (preferences.knobRotationStyle !== "absolute-rotary") {
+        addKeybindHint("knob-fine-drag", {
+          description: "Fine drag",
+          keybind: ["Ctrl", "Left-Click"],
+        });
+      }
+    }}
+    onmouseleave={() => {
+      removeKeybindHint("initialize-knob");
+      removeKeybindHint("knob-fine-drag");
+    }}
     style:--knob-rotation="{240 * percent - 120}deg"
+    use:tooltip={{
+      essential: true,
+      text: `${label}: ${displayValue} ${displayConfig?.displayUnit ?? ""}`,
+    }}
   >
     <span class="knob-indicator" {...indicatorProps}></span>
   </div>
@@ -156,7 +212,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2px;
+    position: relative;
+    padding: 2px 10px;
+  }
+
+  .knob-menu {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0;
+    display: none;
+  }
+
+  .knob-wrapper:hover .knob-menu {
+    display: block;
   }
 
   .knob {

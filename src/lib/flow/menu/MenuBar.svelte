@@ -225,6 +225,27 @@
           >
         {/snippet}
       </SubMenu>
+      <SubMenu>
+        Tooltip Detail
+        {#snippet menu()}
+          <MenuItem onclick={() => (preferences.tooltipDetail = "all")}
+            ><div class="flex-center">
+              <Radio bind:group={preferences.tooltipDetail} value="all" />All
+            </div></MenuItem
+          >
+          <MenuItem onclick={() => (preferences.tooltipDetail = "essential")}
+            ><div class="flex-center">
+              <Radio bind:group={preferences.tooltipDetail} value="essential" />Essential (knob
+              values)
+            </div></MenuItem
+          >
+          <MenuItem onclick={() => (preferences.tooltipDetail = "none")}
+            ><div class="flex-center">
+              <Radio bind:group={preferences.tooltipDetail} value="none" />None
+            </div></MenuItem
+          >
+        {/snippet}
+      </SubMenu>
       <MenuDivider />
       <MenuItem
         class="flex-center"

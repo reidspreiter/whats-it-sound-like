@@ -30,11 +30,7 @@ export type ReservedParamNames = (typeof reservedParamNames)[number];
  */
 export type AutomationRate = "a-rate" | "k-rate";
 
-// This interface is very similar to Knob props and potentially other props in the future.
-// A separate interface was intentionally used here to separate the audio thread from the main thread.
-export interface WISLAudioParamInfo {
-  automationRate?: AutomationRate;
-  defaultValue: number;
+export interface DisplayConfig {
   /**
    * - `0`: linear (default, no effect)
    * - `< 0`: log of value using this base
@@ -46,6 +42,16 @@ export interface WISLAudioParamInfo {
   displayMultiplier?: number;
 
   displayOffset?: number;
+  displayPrecision?: number;
+  displayUnit?: string;
+}
+
+// This interface is very similar to Knob props and potentially other props in the future.
+// A separate interface was intentionally used here to separate the audio thread from the main thread.
+export interface WISLAudioParamInfo {
+  automationRate?: AutomationRate;
+  defaultValue: number;
+  displayConfig: DisplayConfig;
   max: number;
   min: number;
   step?: number;
