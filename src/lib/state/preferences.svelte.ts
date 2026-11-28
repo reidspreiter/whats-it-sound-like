@@ -4,12 +4,15 @@ export type NavigationStyle = "pan-on-drag" | "pan-on-scroll";
 
 export type KnobRotationStyle = "absolute-rotary" | "linear" | "linear-ptr-lock";
 
+export type TooltipDetail = "all" | "essential" | "none";
+
 export interface Preferences {
   cableOpacity: number;
   cableTension: number;
   knobRotationStyle: KnobRotationStyle;
   navigationStyle: NavigationStyle;
   showKeybindHints: boolean;
+  tooltipDetail: TooltipDetail;
 }
 
 export const preferences = $state<Preferences>({
@@ -18,6 +21,7 @@ export const preferences = $state<Preferences>({
   knobRotationStyle: "linear-ptr-lock",
   navigationStyle: "pan-on-drag",
   showKeybindHints: true,
+  tooltipDetail: "all",
 });
 
 $effect.root(() => {
