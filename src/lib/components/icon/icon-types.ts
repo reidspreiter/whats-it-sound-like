@@ -7,6 +7,7 @@ export type IconName =
   | "export"
   | "folder-open"
   | "import"
+  | "keyboard"
   | "mouse-left-click"
   | "mouse-middle-click"
   | "path"
