@@ -2,16 +2,18 @@
   import type { HTMLAttributes } from "svelte/elements";
 
   import { Icon, type IconName, type IconProps } from "./icon";
+  import { tooltip } from "./tooltip";
 
   interface IconButtonProps extends HTMLAttributes<HTMLButtonElement> {
+    description?: string;
     iconProps?: Omit<IconProps, "name">;
     name: IconName;
   }
 
-  let { iconProps, name, ...others }: IconButtonProps = $props();
+  let { description, iconProps, name, ...others }: IconButtonProps = $props();
 </script>
 
-<button {...others}><Icon {name} {...iconProps} /></button>
+<button use:tooltip={{ text: description }} {...others}><Icon {name} {...iconProps} /></button>
 
 <style>
   button {
