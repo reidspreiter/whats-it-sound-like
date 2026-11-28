@@ -13,3 +13,4 @@ export { default as Slider } from "./Slider.svelte";
 export { default as Surface } from "./Surface.svelte";
 export { default as TextField } from "./TextField.svelte";
 export { default as TextWithRename } from "./TextWithRename.svelte";
+export * from "./tooltip";
