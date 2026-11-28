@@ -12,8 +12,11 @@ export default createProcessorConfig("audio-out", url)
   .addParam("level", {
     automationRate: "k-rate",
     defaultValue: 1,
-    displayBase: -10,
-    displayMultiplier: 40,
+    displayConfig: {
+      displayBase: -10,
+      displayMultiplier: 40,
+      displayUnit: "dB",
+    },
     max: 2,
     min: 0,
   })
